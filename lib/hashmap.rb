@@ -28,10 +28,7 @@ class HashMap
 
     hash_code = hash(key)
 
-    unless buckets[hash_code]
-      linkedlist = LinkedList.new
-      buckets[hash_code] = linkedlist
-    end
+    buckets[hash_code] = LinkedList.new unless buckets[hash_code] 
 
     buckets[hash_code].add(key, value)
     self.entries_count += 1
