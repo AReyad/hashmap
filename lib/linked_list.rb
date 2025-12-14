@@ -8,7 +8,7 @@ class LinkedList
     @tail = nil
   end
 
-  def add_or_update(key, value)
+  def add(key, value)
     node = Node.new(key, value)
     self.head = node unless head
     tail.next_node = node if tail

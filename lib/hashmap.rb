@@ -21,24 +21,24 @@ class HashMap
     hash_code % capacity
   end
 
-  def set(key, value, buckets = self.buckets)
+  def set(key, value)
     return unless key.is_a?(String)
 
-    return change_value(key, value) if has?(key, buckets)
+    return change_value(key, value) if has?(key)
 
     hash_code = hash(key)
 
-    unless buckets[hash(key)]
+    unless buckets[hash_code]
       linkedlist = LinkedList.new
       buckets[hash_code] = linkedlist
     end
 
-    buckets[hash_code].add_or_update(key, value)
+    buckets[hash_code].add(key, value)
     self.entries_count += 1
     grow
   end
 
-  def has?(key, buckets = self.buckets)
+  def has?(key)
     hash_code = hash(key)
     return false unless buckets[hash_code]&.contains?(key)
 
@@ -101,7 +101,7 @@ class HashMap
     self
   end
 
-  # private
+  private
 
   def growable?
     entries_count > load_factor * capacity # 0.75 * 16 = 12
@@ -109,23 +109,23 @@ class HashMap
 
   def grow
     return unless growable?
-    self.capacity = capacity * 2 # 16 * 2 = 32
-    new_buckets = Array.new(capacity)
-    self.entries_count = 0
 
-    entries.each do |entry|
-      set(entry[0], entry[1], new_buckets) # entry = [key, value]
+    self.capacity = capacity * 2 # 16 * 2 = 32
+    self.entries_count = 0
+    current_entries = entries
+    self.buckets = Array.new(capacity)
+
+    current_entries.each do |entry|
+      set(entry[0], entry[1]) # entry = [key, value]
     end
-    
-    self.buckets = new_buckets
+
     self
   end
 
   def change_value(key, value)
     buckets[hash(key)].find(key).value = value
   end
-  
+
   attr_reader :load_factor
   attr_accessor :entries_count, :capacity, :buckets
 end
-

@@ -1,7 +1,8 @@
+# frozen_string_literal: true
+
 require_relative 'lib/hashmap'
 
 hash_map = HashMap.new
-
 
 hash_map.set('apple', 'red')
 hash_map.set('banana', 'yellow')
@@ -16,6 +17,3 @@ hash_map.set('ice cream', 'white')
 hash_map.set('jacket', 'blue')
 hash_map.set('kite', 'pink')
 hash_map.set('kitty', 'pink')
-
-p hash_map
-p hash_map.grow
